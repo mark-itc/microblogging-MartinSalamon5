@@ -1,18 +1,25 @@
 import "./App.css";
 import TweetCreator from "./Components/TweetCreator";
 import TweetList from "./Components/TweetList";
-import localForage from "localforage";
 import { useEffect, useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Spinner from "react-bootstrap/Spinner";
 
 function App() {
   const [tweetArr, setTweetArr] = useState([]);
+  const [showSpinner, setShowSpinner] = useState(false);
 
   const getTweetsFromStorage = async () => {
     try {
-      const tweetStorage = await localForage.getItem("tweetStorage");
-      setTweetArr(tweetStorage);
+      const response = await fetch(
+        "https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet"
+      );
+      const tweetStorage = await response.json();
+      const storedTweetArray = tweetStorage.tweets;
+      setTweetArr(storedTweetArray);
+      console.log(storedTweetArray);
     } catch (err) {
-      console.log("No data saved");
+      alert("Server is offline.");
     }
   };
 
@@ -20,20 +27,53 @@ function App() {
     getTweetsFromStorage();
   }, []);
 
-  const postTweet = (tweet) => {
-    const tweetDate = new Date();
-    const userName = "Martin";
-    setTweetArr([...tweetArr, { tweetDate, tweet, userName }]);
+  // const postTweet = (content) => {
+  // const dateObject = new Date();
+  // const date = dateObject.toISOString();
+  // const userName = "Martin";
+  // setTweetArr([...tweetArr, { content, userName, date }]);
+  // };
+
+  const postTweetToServer = async (tweetObject) => {
+    try {
+      setShowSpinner(true);
+      const response = await fetch(
+        "https://micro-blogging-dot-full-stack-course-services.ew.r.appspot.com/tweet",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(tweetObject),
+        }
+      );
+      const json = await response.json();
+      setTweetArr([...tweetArr, json]);
+      setShowSpinner(false);
+      console.log(json);
+    } catch (err) {
+      alert("Post was unsuccessful.");
+    }
   };
 
-  useEffect(() => {
-    localForage.setItem("tweetStorage", tweetArr);
-  }, [tweetArr]);
+  // useEffect(() => {
+  // setShowSpinner(true);
+  //   tweetArr.map((tweet) => {
+  //     return postTweetToServer(tweet);
+  //   });
+  // }, [tweetArr]);
+
+  const spinnerRenderer = () => {
+    if (showSpinner === true) {
+      return <Spinner animation="border" size="lg" />;
+    } else if (showSpinner === false) {
+      return;
+    }
+  };
 
   return (
     <div className="App">
       <header className="App-header">
-        <TweetCreator postTweet={postTweet} />
+        <TweetCreator postTweetToServer={postTweetToServer} />
+        {spinnerRenderer()}
         <TweetList tweetArr={tweetArr} />
       </header>
     </div>

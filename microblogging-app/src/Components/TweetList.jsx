@@ -5,7 +5,7 @@ function TweetList(props) {
   const { tweetArr } = props;
 
   tweetArr.sort((a, b) => {
-    return b.tweetDate - a.tweetDate;
+    return new Date(b.date) - new Date(a.date);
   });
 
   return (

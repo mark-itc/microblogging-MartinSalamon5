@@ -2,15 +2,9 @@ import "./TweetBox.css";
 
 function TweetBox(props) {
   const { tweet } = props;
-  const options = {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  };
-  const tweetDate = tweet.tweetDate.toLocaleDateString(undefined, options);
-  const text = tweet.tweet;
+
+  const tweetDate = tweet.date;
+  const text = tweet.content;
   const userName = tweet.userName;
 
   return (

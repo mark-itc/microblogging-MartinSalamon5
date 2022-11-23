@@ -21,19 +21,16 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  background-color: rgb(21, 122, 246);
-  height: 30px;
-  width: 60px;
   margin: 10px;
-  color: whitesmoke;
 }
 
-.tweet-submit-button:hover {
-  cursor: pointer;
-}
-
-.tweet-submit-button:disabled {
-  background-color: rgba(21, 122, 246, 0.532);
-  color: grey;
-  cursor: default;
+.max-chars-alert {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  bottom: 56px;
+  left: 10px;
+  height: 10%;
+  width: 70%;
+  font-size: 15px;
 }
