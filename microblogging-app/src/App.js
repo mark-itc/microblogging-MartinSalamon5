@@ -27,13 +27,6 @@ function App() {
     getTweetsFromStorage();
   }, []);
 
-  // const postTweet = (content) => {
-  // const dateObject = new Date();
-  // const date = dateObject.toISOString();
-  // const userName = "Martin";
-  // setTweetArr([...tweetArr, { content, userName, date }]);
-  // };
-
   const postTweetToServer = async (tweetObject) => {
     try {
       setShowSpinner(true);
@@ -53,13 +46,6 @@ function App() {
       alert("Post was unsuccessful.");
     }
   };
-
-  // useEffect(() => {
-  // setShowSpinner(true);
-  //   tweetArr.map((tweet) => {
-  //     return postTweetToServer(tweet);
-  //   });
-  // }, [tweetArr]);
 
   const spinnerRenderer = () => {
     if (showSpinner === true) {
